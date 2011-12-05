@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: FlexColumns SWT Snippets
+Bundle-SymbolicName: com.metapriori.ui.flexcolumns.swt.snippet
+Bundle-Version: 1.0.0
+Bundle-Vendor: Meta Priori
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.swt,
+ com.metapriori.ui.flexcolumns.swt
