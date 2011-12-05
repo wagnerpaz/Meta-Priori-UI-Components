@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Meta Priori SWT Components Snippets
+Bundle-SymbolicName: com.metapriori.ui.dateselector.swt.snippet
+Bundle-Version: 1.0.0
+Bundle-Vendor: Meta Priori
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.swt,
+ org.eclipse.core.runtime,
+ org.eclipse.core.databinding,
+ org.eclipse.jface.databinding,
+ org.eclipse.core.databinding.beans,
+ org.eclipse.core.databinding.property,
+ com.ibm.icu,
+ com.metapriori.ui.dateselector.swt
