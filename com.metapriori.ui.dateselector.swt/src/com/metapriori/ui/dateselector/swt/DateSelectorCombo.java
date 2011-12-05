@@ -19,9 +19,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TypedListener;
 
 /**
@@ -253,9 +251,9 @@ public class DateSelectorCombo extends Composite
 	
 	private void formatDate()
 	{
-		String day   = FMT_DAY  .format(cal.get(Calendar.DAY_OF_MONTH) );
-		String month = FMT_MONTH.format(cal.get(Calendar.MONTH       ) );
-		String year  = FMT_YEAR .format(cal.get(Calendar.YEAR        ) );
+		String day   = FMT_DAY  .format(cal.get(Calendar.DAY_OF_MONTH)     );
+		String month = FMT_MONTH.format(cal.get(Calendar.MONTH       ) + 1 );
+		String year  = FMT_YEAR .format(cal.get(Calendar.YEAR        )     );
 		
 		select(cmbDay  , day);
 		select(cmbMonth, month);
@@ -268,9 +266,9 @@ public class DateSelectorCombo extends Composite
 		{
 			Date old = cal.getTime();
 			
-			cal.set(Calendar.DAY_OF_MONTH, !cmbDay  .getText().isEmpty() ? FMT_DAY  .parse(cmbDay  .getText()).intValue() : 0);
-			cal.set(Calendar.MONTH       , !cmbMonth.getText().isEmpty() ? FMT_MONTH.parse(cmbMonth.getText()).intValue() : 0);
-			cal.set(Calendar.YEAR        , !cmbYear .getText().isEmpty() ? FMT_YEAR .parse(cmbYear .getText()).intValue() : 0);
+			cal.set(Calendar.DAY_OF_MONTH, !cmbDay  .getText().isEmpty() ? FMT_DAY  .parse(cmbDay  .getText()).intValue()    : 0);
+			cal.set(Calendar.MONTH       , !cmbMonth.getText().isEmpty() ? FMT_MONTH.parse(cmbMonth.getText()).intValue() -1 : 0);
+			cal.set(Calendar.YEAR        , !cmbYear .getText().isEmpty() ? FMT_YEAR .parse(cmbYear .getText()).intValue()    : 0);
 			
 			changeSupport.firePropertyChange(PROP_DATE, old, cal.getTime());
 		}
@@ -301,24 +299,6 @@ public class DateSelectorCombo extends Composite
 		return null;
 	}
 
-	public static void main(String[] args)
-	{
-		Display display = new Display();
-		Shell shell = new Shell(display);
-		shell.setLayout(new GridLayout(1, false));
-
-		DateSelectorCombo dt = new DateSelectorCombo(shell, SWT.NONE);
-		dt.setDate(new Date());
-
-		shell.pack();
-		shell.open();
-		while (!shell.isDisposed())
-		{
-			if (!display.readAndDispatch()) display.sleep();
-		}
-		display.dispose();
-	}
-	
 	public String[] createNumStrRange(int init, int end, DecimalFormat format)
 	{
 		String[] result = new String[end-init+1];
