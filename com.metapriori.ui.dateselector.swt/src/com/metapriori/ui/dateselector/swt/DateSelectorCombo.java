@@ -9,17 +9,15 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.TypedListener;
 
 /**
@@ -34,15 +32,18 @@ public class DateSelectorCombo extends Composite
 	
 	private Calendar cal = Calendar.getInstance();
 	
-	private Combo cmbDay;
-	private Label lblSeparator1;
-	private Combo cmbMonth;
-	private Label lblSeparator2;
-	private Combo cmbYear;
+	private ComboSwitch cmbDay;
+	private Label       lblSeparator1;
+	private ComboSwitch cmbMonth;
+	private Label       lblSeparator2;
+	private ComboSwitch cmbYear;
+	private boolean	    flat;
 	
 	public DateSelectorCombo(Composite parent, int style)
 	{
 		super(parent, style);
+		flat = (style & SWT.FLAT) == SWT.FLAT;
+		
 		createContents();
 	}
 	
@@ -108,15 +109,44 @@ public class DateSelectorCombo extends Composite
 		gridLayout.marginWidth  = 0;
 		setLayout(gridLayout);
 		
-		cmbDay = new Combo(this, SWT.NONE);
-		cmbDay.setItems(createNumStrRange(1, 31, FMT_DAY));
+		createDayCombo(this);
+		
+		lblSeparator1 = new Label(this, SWT.NONE);
+		lblSeparator1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblSeparator1.setText("/");
+		
+		createMonthCombo(this);
+		
+		lblSeparator2 = new Label(this, SWT.NONE);
+		lblSeparator2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblSeparator2.setText("/");
+		
+		createYearCombo(this);
+	}
+	
+	private void createDayCombo(Composite parent)
+	{
 		GridData gldCmbDay = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gldCmbDay.widthHint = 15;
+		
+		if(!flat)
+		{
+			cmbDay = new ComboSwitch(new Combo(parent, SWT.NONE));
+			gldCmbDay.widthHint = 15;
+		}
+		else
+		{
+			cmbDay = new ComboSwitch(new CCombo(parent, SWT.NONE));
+			gldCmbDay.widthHint = 41;
+		}
+		
 		cmbDay.setLayoutData(gldCmbDay);
-		cmbDay.addModifyListener(new ModifyListener()
+		
+		cmbDay.setVisibleItemCount(20);
+		cmbDay.setItems(createNumStrRange(1, 31, FMT_DAY));
+		cmbDay.addListener(SWT.Modify, new Listener()
 		{
 			@Override
-			public void modifyText(ModifyEvent e)
+			public void handleEvent(Event e)
 			{
 				if(cmbDay.getText().length() >= 2)
 				{
@@ -124,100 +154,18 @@ public class DateSelectorCombo extends Composite
 				}
 			}
 		});
-		cmbDay.addFocusListener(new FocusAdapter()
+		cmbDay.addListener(SWT.FocusOut, new Listener()
 		{
 			@Override
-			public void focusLost(FocusEvent e)
+			public void handleEvent(Event e)
 			{
 				select(cmbDay, !cmbDay.getText().isEmpty() ? FMT_DAY.format( Integer.parseInt(cmbDay.getText()) ) : "");
 			}
 		});
-		cmbDay.addKeyListener(new KeyAdapter()
+		cmbDay.addListener(SWT.KeyDown, new Listener()
 		{
 			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if(!isValidInput(e.character))
-				{
-					e.doit = false;
-				}
-			}
-		});
-		
-		lblSeparator1 = new Label(this, SWT.NONE);
-		lblSeparator1.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblSeparator1.setText("/");
-		
-		cmbMonth = new Combo(this, SWT.NONE);
-		cmbMonth.setItems(createNumStrRange(1, 12, FMT_MONTH));
-		GridData gldCmbMounth = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-		gldCmbMounth.widthHint = 15;
-		cmbMonth.setLayoutData(gldCmbMounth);
-		cmbMonth.addModifyListener(new ModifyListener()
-		{
-			@Override
-			public void modifyText(ModifyEvent e)
-			{
-				if(cmbMonth.getText().length() >= 2)
-				{
-					cmbYear.forceFocus();
-				}
-			}
-		});
-		cmbMonth.addFocusListener(new FocusAdapter()
-		{
-			@Override
-			public void focusLost(FocusEvent e)
-			{
-				select(cmbMonth, !cmbMonth.getText().isEmpty() ? FMT_MONTH.format( Integer.parseInt(cmbMonth.getText()) ) : "");
-			}
-		});
-		cmbMonth.addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if(!isValidInput(e.character))
-				{
-					e.doit = false;
-				}
-			}
-		});
-		
-		lblSeparator2 = new Label(this, SWT.NONE);
-		lblSeparator2.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblSeparator2.setText("/");
-		
-		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-		
-		cmbYear = new Combo(this, SWT.NONE);
-		cmbYear.setItems(createNumStrRange(currentYear - 50, currentYear + 10, FMT_YEAR));
-		GridData gldCmbYear = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
-		gldCmbYear.widthHint = 30;
-		cmbYear.setLayoutData(gldCmbYear);
-		cmbYear.addModifyListener(new ModifyListener()
-		{
-			@Override
-			public void modifyText(ModifyEvent e)
-			{
-				if(cmbYear.getText().length() >= 4)
-				{
-					cmbYear.traverse(SWT.TRAVERSE_TAB_NEXT);
-				}
-			}
-		});
-		cmbYear.addFocusListener(new FocusAdapter()
-		{
-			@Override
-			public void focusLost(FocusEvent e)
-			{
-				select(cmbYear, !cmbYear.getText().isEmpty() ? FMT_YEAR.format( Integer.parseInt(cmbYear.getText()) ) : "");
-			}
-		});
-		cmbYear.addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
+			public void handleEvent(Event e)
 			{
 				if(!isValidInput(e.character))
 				{
@@ -226,7 +174,111 @@ public class DateSelectorCombo extends Composite
 			}
 		});
 	}
-	
+
+	private void createMonthCombo(DateSelectorCombo parent)
+	{
+		GridData gldCmbMounth = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		
+		if(!flat)
+		{
+			cmbMonth = new ComboSwitch(new Combo(parent, SWT.NONE));
+			gldCmbMounth.widthHint = 15;
+		}
+		else
+		{
+			cmbMonth = new ComboSwitch(new CCombo(parent, SWT.NONE));
+			gldCmbMounth.widthHint = 41;
+		}
+		
+		cmbMonth.setLayoutData(gldCmbMounth);
+		
+		cmbMonth.setVisibleItemCount(12);
+		cmbMonth.setItems(createNumStrRange(1, 12, FMT_MONTH));
+		cmbMonth.addListener(SWT.Modify, new Listener()
+		{
+			@Override
+			public void handleEvent(Event e)
+			{
+				if(cmbMonth.getText().length() >= 2)
+				{
+					cmbYear.forceFocus();
+				}
+			}
+		});
+		cmbMonth.addListener(SWT.FocusOut, new Listener()
+		{
+			@Override
+			public void handleEvent(Event e)
+			{
+				select(cmbMonth, !cmbMonth.getText().isEmpty() ? FMT_MONTH.format( Integer.parseInt(cmbMonth.getText()) ) : "");
+			}
+		});
+		cmbMonth.addListener(SWT.KeyDown, new Listener()
+		{
+			@Override
+			public void handleEvent(Event e)
+			{
+				if(!isValidInput(e.character))
+				{
+					e.doit = false;
+				}
+			}
+		});
+	}
+
+	private void createYearCombo(DateSelectorCombo parent)
+	{
+		GridData gldCmbYear = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
+		
+		if(!flat)
+		{
+			cmbYear = new ComboSwitch(new Combo(parent, SWT.NONE));
+			gldCmbYear.widthHint = 30;
+		}
+		else
+		{
+			cmbYear = new ComboSwitch(new CCombo(parent, SWT.NONE));
+			gldCmbYear.widthHint = 55;
+		}
+		
+		cmbYear.setLayoutData(gldCmbYear);
+		
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		
+		cmbYear.setVisibleItemCount(20);
+		cmbYear.setItems(createNumStrRange(currentYear - 50, currentYear + 10, FMT_YEAR));
+		cmbYear.addListener(SWT.Modify, new Listener()
+		{
+			@Override
+			public void handleEvent(Event e)
+			{
+				if(cmbYear.getText().length() >= 4)
+				{
+					cmbYear.traverse(SWT.TRAVERSE_TAB_NEXT);
+				}
+			}
+		});
+		cmbYear.addListener(SWT.FocusOut, new Listener()
+		{
+			@Override
+			public void handleEvent(Event e)
+			{
+				select(cmbYear, !cmbYear.getText().isEmpty() ? FMT_YEAR.format( Integer.parseInt(cmbYear.getText()) ) : "");
+			}
+		});
+		cmbYear.addListener(SWT.KeyDown, new Listener()
+		{
+			@Override
+			public void handleEvent(Event e)
+			{
+				if(!isValidInput(e.character))
+				{
+					e.doit = false;
+				}
+			}
+		});
+	}
+
 	protected boolean isValidInput(char c)
 	{
 		return Character.isDigit(c)
@@ -278,14 +330,14 @@ public class DateSelectorCombo extends Composite
 		}
 	}
 	
-	private void select(Combo cmb, String txt)
+	private void select(ComboSwitch cmb, String txt)
 	{
 		Integer index = retrieveSelectionIndex(cmb, txt);
 		if(index != null) cmb.select(index); else cmb.setText(txt);
 		parseDate();
 	}
 	
-	private Integer retrieveSelectionIndex(Combo cmb, String txt)
+	private Integer retrieveSelectionIndex(ComboSwitch cmb, String txt)
 	{
 		int count = 0;
 		for (String item : cmb.getItems())
@@ -309,17 +361,17 @@ public class DateSelectorCombo extends Composite
 		return result;
 	}
 
-	public Combo getCmbDay()
+	public ComboSwitch getCmbDay()
 	{
 		return cmbDay;
 	}
 
-	public Combo getCmbMonth()
+	public ComboSwitch getCmbMonth()
 	{
 		return cmbMonth;
 	}
 
-	public Combo getCmbYear()
+	public ComboSwitch getCmbYear()
 	{
 		return cmbYear;
 	}

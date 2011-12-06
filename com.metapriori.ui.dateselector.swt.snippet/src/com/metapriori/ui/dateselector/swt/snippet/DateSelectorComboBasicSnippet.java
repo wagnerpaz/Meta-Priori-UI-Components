@@ -22,8 +22,11 @@ public class DateSelectorComboBasicSnippet
 		shell.setText("Snippet");
 		shell.setLayout(new GridLayout(1, false));
 
-		DateSelectorCombo dt = new DateSelectorCombo(shell, SWT.NONE);
-		dt.setDate(new Date());
+		DateSelectorCombo dtNative = new DateSelectorCombo(shell, SWT.NONE);
+		dtNative.setDate(new Date());
+		
+		DateSelectorCombo dtFlat = new DateSelectorCombo(shell, SWT.FLAT|SWT.BORDER);
+		dtFlat.setDate(new Date());
 
 		shell.pack();
 		shell.open();
