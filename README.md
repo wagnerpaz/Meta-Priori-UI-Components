@@ -1,7 +1,12 @@
 #Meta Priori UI Components
 
-This project consists in a set of high-level GUI components built,
+This project consists in a set of independent high-level GUI components built,
 with SWT and JFace atop, to assist in the development of Eclipse RCP applications.
+
+Avaible components (documented below):
+
+* FlexColumns
+* DateSelectorCombo
 
 
 ##FlexColumns
@@ -9,6 +14,7 @@ with SWT and JFace atop, to assist in the development of Eclipse RCP application
    A table extension that provides additional features in column definition and user interaction.
 
    These features are:
+   
    * Dynamic column width. It's possible to define the column preferred and minimum size using percent or pixel values.
    * Dynamic resize of columns. The dynamic widths are recalculated as the table or other columns are resized.
    * User can choose to show or hide the avaible columns.
@@ -19,6 +25,7 @@ with SWT and JFace atop, to assist in the development of Eclipse RCP application
    A date selection component based on three separeted combos, one for day, month and year input.
 
    Features:
+   
    * Keyboard, digit only, input.
    * Automatically focus on next combo when the is input is complete.
    * List of suggested values.
