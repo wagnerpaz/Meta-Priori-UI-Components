@@ -11,7 +11,7 @@ with SWT and JFace atop, to assist in the development of Eclipse RCP application
 
 ##FlexColumns
 
-   A table extension that provides additional features in column definition and user interaction.
+   A table extension that provides additional features for column definition and user interaction.
 
 ###Features:
    
