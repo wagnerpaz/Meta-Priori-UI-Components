@@ -6,4 +6,4 @@ with SWT and JFace atop, to assist in the development of Eclipse RCP application
 ###Avaible components:
 
 * [FlexColumns](https://github.com/wagnerpaz/Meta-Priori-UI-Components/tree/master/com.metapriori.ui.flexcolumns.swt): A table extension that provides additional features for column definition and user interaction.
-* [DateSelectorCombo](https://github.com/wagnerpaz/Meta-Priori-UI-Components/tree/master/com.metapriori.ui.dateselector.swt): A date selection component based on three separeted combos, one for day, month and year input.
+* [DateSelectorCombo](https://github.com/wagnerpaz/Meta-Priori-UI-Components/tree/master/com.metapriori.ui.dateselector.swt): A date selection component based on three separeted combos, for day, month and year input.
