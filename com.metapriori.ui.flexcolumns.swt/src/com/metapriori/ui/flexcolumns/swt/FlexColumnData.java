@@ -3,6 +3,10 @@ package com.metapriori.ui.flexcolumns.swt;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TreeColumn;
 
+import com.metapriori.ui.flexcolumns.measure.FlexLength;
+import com.metapriori.ui.flexcolumns.measure.LengthFormat;
+import com.metapriori.ui.flexcolumns.measure.LengthMeasure;
+
 /**
  * <p>Define as propriedades de uma coluna flexível.</p>
  * <p>Os objetos desta classe devem ser registrados e
@@ -10,7 +14,7 @@ import org.eclipse.swt.widgets.TreeColumn;
  * 
  * @author Wagner Paz
  * @since  1.0
- * @see com.metapriori.ui.flexcolumns.swt.FlexTableColumnLayout
+ * @see com.metapriori.ui.flexcolumns.swt.FlexColumnLayout
  */
 public class FlexColumnData
 {

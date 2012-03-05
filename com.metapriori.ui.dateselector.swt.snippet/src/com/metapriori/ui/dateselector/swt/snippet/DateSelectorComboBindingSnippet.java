@@ -63,7 +63,7 @@ public class DateSelectorComboBindingSnippet
 				lblDateSelectorCombo = new Label(shell, SWT.NONE);
 				lblDateSelectorCombo.setText("DateSelectorCombo:");
 
-				dsc = new DateSelectorCombo(shell, SWT.NONE);
+				dsc = new DateSelectorCombo(shell, SWT.FLAT, "HH:mm:ss");
 				
 				lblSeparator1 = new Label(shell, SWT.SEPARATOR | SWT.HORIZONTAL);
 				lblSeparator1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
@@ -91,7 +91,7 @@ public class DateSelectorComboBindingSnippet
 					@Override
 					public Object convert(Object value)
 					{
-						return new SimpleDateFormat("dd/MM/yyyy").format((Date)value);
+						return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format((Date)value);
 					}
 				}, null);
 			}

@@ -4,7 +4,9 @@ Bundle-Name: SWT Flex Columns
 Bundle-SymbolicName: com.metapriori.ui.flexcolumns.swt
 Bundle-Version: 1.0.0
 Bundle-Vendor: Meta Priori
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.ui
-Export-Package: com.metapriori.ui.flexcolumns.swt
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.ui
+Export-Package: com.metapriori.ui.flexcolumns.measure,
+ com.metapriori.ui.flexcolumns.swt,
+ com.metapriori.ui.flexcolumns.swt.table,
+ com.metapriori.ui.flexcolumns.swt.tree
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
